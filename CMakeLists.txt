@@ -23,7 +23,7 @@ link_libraries ("omniORB4_rtd.lib" "omniDynamic4_rtd.lib" "omnithread_rtd.lib")
 
 # Projects.
 add_subdirectory ("stubs/OmniORB4CppStubs")
-add_subdirectory ("stubs/IdljStubs")
+#add_subdirectory ("stubs/IdljStubs")
 add_subdirectory ("OmniORB4CppServer")
 add_subdirectory ("OmniORB4CppClient")
-add_subdirectory ("IdljJavaClient")
+#add_subdirectory ("IdljJavaClient")
