@@ -1,0 +1,8 @@
+module CORBATest
+{
+	interface Echo
+	{
+		string echoString(in string msg);
+		string echoReversedString(in string msg);
+	};
+};
