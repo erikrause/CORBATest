@@ -14,7 +14,7 @@ add_compile_definitions (__WIN32__ __x86__ _WIN32_WINNT=0x0400 __NT__ __OSVERSIO
 
 # Includes.
 include_directories ("C:/omniORB-4.3.0/include")
-include_directories ("OmniORB4Stubs/include")
+include_directories ("stubs/OmniORB4CppStubs/include")
 
 # Links.
 link_directories ("C:/omniORB-4.3.0/bin/x86_win32")	# TODO: delete
@@ -22,7 +22,8 @@ link_directories ("C:/omniORB-4.3.0/lib/x86_win32")
 link_libraries ("omniORB4_rtd.lib" "omniDynamic4_rtd.lib" "omnithread_rtd.lib")
 
 # Projects.
-add_subdirectory ("CORBATest")
-add_subdirectory ("OmniORB4Stubs")
+add_subdirectory ("stubs/OmniORB4CppStubs")
+add_subdirectory ("stubs/IdljStubs")
 add_subdirectory ("OmniORB4CppServer")
 add_subdirectory ("OmniORB4CppClient")
+add_subdirectory ("IdljJavaClient")
