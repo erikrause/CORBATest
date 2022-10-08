@@ -17,7 +17,7 @@ include_directories ("C:/omniORB-4.3.0/include")
 include_directories ("stubs/OmniORB4CppStubs/include")
 
 # Links.
-link_directories ("C:/omniORB-4.3.0/bin/x86_win32")	# TODO: delete
+link_directories ("C:/omniORB-4.3.0/bin/x86_win32")
 link_directories ("C:/omniORB-4.3.0/lib/x86_win32")
 link_libraries ("omniORB4_rtd.lib" "omniDynamic4_rtd.lib" "omnithread_rtd.lib")
 
