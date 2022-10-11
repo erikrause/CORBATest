@@ -1,14 +1,17 @@
 #include "EchoImplementation.h"
 #include <algorithm>
 
-char* EchoImplementation::echoString(const char* mesg)
-{
-	return CORBA::string_dup(mesg);
-}
 
-char* EchoImplementation::echoReversedString(const char* mesg)
+void EchoImplementation::reverseString(::CORBATest::PersonSeq& persons)
 {
-	char* duplicateMesg = CORBA::string_dup(mesg);
-	std::reverse(duplicateMesg, duplicateMesg + std::strlen(duplicateMesg));
-	return duplicateMesg;
+	for (long i = 0; i < persons.length(); i++)
+	{
+		CORBATest::Person* currentPerson = &persons[i];
+		char* strings[3] = { currentPerson->Name, currentPerson->Surename, currentPerson->Patronymic };
+
+		for (char* str : strings)
+		{
+			std::reverse(str, str + std::strlen(str));
+		}
+	}
 }

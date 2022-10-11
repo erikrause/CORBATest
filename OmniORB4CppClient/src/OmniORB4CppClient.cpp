@@ -11,18 +11,38 @@ void hello(CORBA::Object_ptr obj)
 		return;
 	}
 
-	CORBA::String_var src = (const char*)"Hello!";
-	CORBA::String_var dest;
 
-	dest = e->echoString(src);
+	// Initialization.
+	unsigned long numPersons = 2;
+	auto persons = new CORBATest::Person[numPersons];
+	{
+		persons[0].Name = "Иван";
+		persons[0].Surename = "Иванов";
+		persons[0].Patronymic = "Иванович";
 
-	std::cout << "Testing echoString: I said,\"" << src << "\"."
-		<< " The Server said,\"" << dest << "\"" << std::endl;
+		persons[1].Name = "Эркин";
+		persons[1].Surename = "Камилов";
+		persons[1].Patronymic = "Махмуджанович";
+	}
 
-	dest = e->echoReversedString(src);
 
-	std::cout << "Testing echoReversedString: I said,\"" << src << "\"."
-		<< " The Server said,\"" << dest << "\"" << std::endl;
+	// RPC.
+	CORBATest::PersonSeq_var personSeq = new CORBATest::PersonSeq(numPersons, numPersons, persons);
+	e->reverseString(personSeq);
+
+
+	// Output.
+	setlocale(LC_ALL, "");
+	{
+		std::cout << "Testing reverse names: " << std::endl;
+
+			for (unsigned int i = 0; i < personSeq->length(); i++)
+			{
+				CORBATest::Person currentPerson = personSeq[i];
+				std::cout << currentPerson.Surename << " " << currentPerson.Name << " " << currentPerson.Patronymic << std::endl;
+			}
+	}
+	std::getchar();
 }
 
 

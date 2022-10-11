@@ -1,8 +1,17 @@
 module CORBATest
 {
+	struct Person
+	{
+		string Name;
+		string Surename;
+		string Patronymic;
+	};
+
+	typedef sequence<Person> PersonSeq;
+
+
 	interface Echo
 	{
-		string echoString(in string msg);
-		string echoReversedString(in string msg);
+		void reverseString(inout PersonSeq persons);
 	};
 };

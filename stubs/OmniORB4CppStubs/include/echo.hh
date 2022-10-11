@@ -56,17 +56,151 @@ _CORBA_MODULE CORBATest
 
 _CORBA_MODULE_BEG
 
+struct Person {
+    typedef _CORBA_ConstrType_Variable_Var<Person> _var_type;
+
+
+    ::CORBA::String_member Name;
+
+    ::CORBA::String_member Surename;
+
+    ::CORBA::String_member Patronymic;
+
+
+
+    void operator>>= (cdrStream&) const;
+    void operator<<= (cdrStream&);
+};
+
+typedef Person::_var_type Person_var;
+
+typedef _CORBA_ConstrType_Variable_OUT_arg< Person, Person_var > Person_out;
+
+class PersonSeq_var;
+
+class PersonSeq : public _CORBA_Unbounded_Sequence< Person > {
+public:
+    typedef PersonSeq_var _var_type;
+    inline PersonSeq() {}
+    inline PersonSeq(const PersonSeq& _s)
+        : _CORBA_Unbounded_Sequence< Person >(_s) {}
+
+    inline PersonSeq(_CORBA_ULong _max)
+        : _CORBA_Unbounded_Sequence< Person >(_max) {}
+    inline PersonSeq(_CORBA_ULong _max, _CORBA_ULong _len, Person* _val, _CORBA_Boolean _rel = 0)
+        : _CORBA_Unbounded_Sequence< Person >(_max, _len, _val, _rel) {}
+
+
+
+    inline PersonSeq& operator = (const PersonSeq& _s) {
+        _CORBA_Unbounded_Sequence< Person > ::operator=(_s);
+        return *this;
+    }
+};
+
+class PersonSeq_out;
+
+class PersonSeq_var {
+public:
+    inline PersonSeq_var() : _pd_seq(0) {}
+    inline PersonSeq_var(PersonSeq* _s) : _pd_seq(_s) {}
+    inline PersonSeq_var(const PersonSeq_var& _s) {
+        if (_s._pd_seq)  _pd_seq = new PersonSeq(*_s._pd_seq);
+        else             _pd_seq = 0;
+    }
+    inline ~PersonSeq_var() { if (_pd_seq)  delete _pd_seq; }
+
+    inline PersonSeq_var& operator = (PersonSeq* _s) {
+        if (_pd_seq)  delete _pd_seq;
+        _pd_seq = _s;
+        return *this;
+    }
+    inline PersonSeq_var& operator = (const PersonSeq_var& _s) {
+        if (&_s != this) {
+            if (_s._pd_seq) {
+                if (!_pd_seq)  _pd_seq = new PersonSeq;
+                *_pd_seq = *_s._pd_seq;
+            }
+            else if (_pd_seq) {
+                delete _pd_seq;
+                _pd_seq = 0;
+            }
+        }
+        return *this;
+    }
+    inline Person& operator [] (_CORBA_ULong _s) {
+        return (*_pd_seq)[_s];
+    }
+
+
+
+    inline PersonSeq* operator -> () { return _pd_seq; }
+    inline const PersonSeq* operator -> () const { return _pd_seq; }
+#if defined(__GNUG__)
+    inline operator PersonSeq& () const { return *_pd_seq; }
+#else
+    inline operator const PersonSeq& () const { return *_pd_seq; }
+    inline operator PersonSeq& () { return *_pd_seq; }
+#endif
+
+    inline const PersonSeq& in() const { return *_pd_seq; }
+    inline PersonSeq& inout() { return *_pd_seq; }
+    inline PersonSeq*& out() {
+        if (_pd_seq) { delete _pd_seq; _pd_seq = 0; }
+        return _pd_seq;
+    }
+    inline PersonSeq* _retn() { PersonSeq* tmp = _pd_seq; _pd_seq = 0; return tmp; }
+
+    friend class PersonSeq_out;
+
+private:
+    PersonSeq* _pd_seq;
+};
+
+class PersonSeq_out {
+public:
+    inline PersonSeq_out(PersonSeq*& _s) : _data(_s) { _data = 0; }
+    inline PersonSeq_out(PersonSeq_var& _s)
+        : _data(_s._pd_seq) {
+        _s = (PersonSeq*)0;
+    }
+    inline PersonSeq_out(const PersonSeq_out& _s) : _data(_s._data) {}
+    inline PersonSeq_out& operator = (const PersonSeq_out& _s) {
+        _data = _s._data;
+        return *this;
+    }
+    inline PersonSeq_out& operator = (PersonSeq* _s) {
+        _data = _s;
+        return *this;
+    }
+    inline operator PersonSeq*& () { return _data; }
+    inline PersonSeq*& ptr() { return _data; }
+    inline PersonSeq* operator->() { return _data; }
+
+    inline Person& operator [] (_CORBA_ULong _i) {
+        return (*_data)[_i];
+    }
+
+
+
+    PersonSeq*& _data;
+
+private:
+    PersonSeq_out();
+    PersonSeq_out& operator=(const PersonSeq_var&);
+};
+
 #ifndef __CORBATest_mEcho__
 #define __CORBATest_mEcho__
-  class Echo;
-  class _objref_Echo;
-  class _impl_Echo;
-  
-  typedef _objref_Echo* Echo_ptr;
-  typedef Echo_ptr EchoRef;
+class Echo;
+class _objref_Echo;
+class _impl_Echo;
 
-  class Echo_Helper {
-  public:
+typedef _objref_Echo* Echo_ptr;
+typedef Echo_ptr EchoRef;
+
+class Echo_Helper {
+public:
     typedef Echo_ptr _ptr_type;
 
     static _ptr_type _nil();
@@ -75,16 +209,16 @@ _CORBA_MODULE_BEG
     static void duplicate(_ptr_type);
     static void marshalObjRef(_ptr_type, cdrStream&);
     static _ptr_type unmarshalObjRef(cdrStream&);
-  };
+};
 
-  typedef _CORBA_ObjRef_Var<_objref_Echo, Echo_Helper> Echo_var;
-  typedef _CORBA_ObjRef_OUT_arg<_objref_Echo,Echo_Helper > Echo_out;
+typedef _CORBA_ObjRef_Var<_objref_Echo, Echo_Helper> Echo_var;
+typedef _CORBA_ObjRef_OUT_arg<_objref_Echo, Echo_Helper > Echo_out;
 
 #endif
 
-  // interface Echo
-  class Echo {
-  public:
+// interface Echo
+class Echo {
+public:
     // Declarations for this interface type.
     typedef Echo_ptr _ptr_type;
     typedef Echo_var _var_type;
@@ -92,50 +226,49 @@ _CORBA_MODULE_BEG
     static _ptr_type _duplicate(_ptr_type);
     static _ptr_type _narrow(::CORBA::Object_ptr);
     static _ptr_type _unchecked_narrow(::CORBA::Object_ptr);
-    
+
     static _ptr_type _nil();
 
     static inline void _marshalObjRef(_ptr_type, cdrStream&);
 
     static inline _ptr_type _unmarshalObjRef(cdrStream& s) {
-      omniObjRef* o = omniObjRef::_unMarshal(_PD_repoId,s);
-      if (o)
-        return (_ptr_type) o->_ptrToObjRef(_PD_repoId);
-      else
-        return _nil();
+        omniObjRef* o = omniObjRef::_unMarshal(_PD_repoId, s);
+        if (o)
+            return (_ptr_type)o->_ptrToObjRef(_PD_repoId);
+        else
+            return _nil();
     }
 
     static inline _ptr_type _fromObjRef(omniObjRef* o) {
-      if (o)
-        return (_ptr_type) o->_ptrToObjRef(_PD_repoId);
-      else
-        return _nil();
+        if (o)
+            return (_ptr_type)o->_ptrToObjRef(_PD_repoId);
+        else
+            return _nil();
     }
 
     static _core_attr const char* _PD_repoId;
 
     // Other IDL defined within this scope.
-    
-  };
 
-  class _objref_Echo :
+};
+
+class _objref_Echo :
     public virtual ::CORBA::Object,
     public virtual omniObjRef
-  {
-  public:
+{
+public:
     // IDL operations
-    char* echoString(const char* msg);
-    char* echoReversedString(const char* msg);
+    void reverseString(::CORBATest::PersonSeq& persons);
 
     // Constructors
-    inline _objref_Echo()  { _PR_setobj(0); }  // nil
+    inline _objref_Echo() { _PR_setobj(0); }  // nil
     _objref_Echo(omniIOR*, omniIdentity*);
 
-  protected:
+protected:
     virtual ~_objref_Echo();
 
-    
-  private:
+
+private:
     virtual void* _ptrToObjRef(const char*);
 
     _objref_Echo(const _objref_Echo&);
@@ -143,34 +276,33 @@ _CORBA_MODULE_BEG
     // not implemented
 
     friend class Echo;
-  };
+};
 
-  class _pof_Echo : public _OMNI_NS(proxyObjectFactory) {
-  public:
+class _pof_Echo : public _OMNI_NS(proxyObjectFactory) {
+public:
     inline _pof_Echo() : _OMNI_NS(proxyObjectFactory)(Echo::_PD_repoId) {}
     virtual ~_pof_Echo();
 
-    virtual omniObjRef* newObjRef(omniIOR*,omniIdentity*);
+    virtual omniObjRef* newObjRef(omniIOR*, omniIdentity*);
     virtual _CORBA_Boolean is_a(const char*) const;
-  };
+};
 
-  class _impl_Echo :
+class _impl_Echo :
     public virtual omniServant
-  {
-  public:
+{
+public:
     virtual ~_impl_Echo();
 
-    virtual char* echoString(const char* msg) = 0;
-    virtual char* echoReversedString(const char* msg) = 0;
-    
-  public:  // Really protected, workaround for xlC
+    virtual void reverseString(::CORBATest::PersonSeq& persons) = 0;
+
+public:  // Really protected, workaround for xlC
     virtual _CORBA_Boolean _dispatch(omniCallHandle&);
 
-  private:
+private:
     virtual void* _ptrToInterface(const char*);
     virtual const char* _mostDerivedRepoId();
-    
-  };
+
+};
 
 
 _CORBA_MODULE_END
@@ -180,17 +312,17 @@ _CORBA_MODULE_END
 _CORBA_MODULE POA_CORBATest
 _CORBA_MODULE_BEG
 
-  class Echo :
+class Echo :
     public virtual CORBATest::_impl_Echo,
     public virtual ::PortableServer::ServantBase
-  {
-  public:
+{
+public:
     virtual ~Echo();
 
     inline ::CORBATest::Echo_ptr _this() {
-      return (::CORBATest::Echo_ptr) _do_this(::CORBATest::Echo::_PD_repoId);
+        return (::CORBATest::Echo_ptr)_do_this(::CORBATest::Echo::_PD_repoId);
     }
-  };
+};
 
 _CORBA_MODULE_END
 
@@ -212,7 +344,7 @@ _CORBA_MODULE_END
 
 inline void
 CORBATest::Echo::_marshalObjRef(::CORBATest::Echo_ptr obj, cdrStream& s) {
-  omniObjRef::_marshal(obj->_PR_getobj(),s);
+    omniObjRef::_marshal(obj->_PR_getobj(), s);
 }
 
 

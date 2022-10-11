@@ -8,6 +8,5 @@ public:
 
 	inline EchoImplementation() {};
 	virtual ~EchoImplementation() {};
-	virtual char* echoString(const char* mesg);
-	virtual char* echoReversedString(const char* msg);
+	virtual void reverseString(::CORBATest::PersonSeq& persons);
 };
